@@ -30,7 +30,8 @@ test("server-renders Huang Yufang's physician profile", async () => {
 
   const html = await response.text();
   assert.match(html, /<html lang="zh-CN">/i);
-  assert.match(html, /<title>黄玉芳医师｜儿科临床 · 中西医融合研修<\/title>/i);
+  assert.match(html, /<title>黄玉芳医师 \| HUANG YUFANG PHYSICIAN<\/title>/i);
+  assert.match(html, /property="og:image"[^>]+og\.png/i);
   assert.match(html, /海军军医大学第一附属医院/);
   assert.match(html, /国家卫健委“西医学习中医”两年期培训/);
   assert.match(html, /本网站内容仅作医师个人经历与专业方向介绍|本站内容仅作医师个人经历与专业方向介绍/);
@@ -42,6 +43,7 @@ test("ships the three supplied physician photographs and accessible structure", 
     access(new URL("../public/huang-yufang-consultation.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-practice.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-service.jpg", import.meta.url)),
+    access(new URL("../public/og.png", import.meta.url)),
   ]);
 
   const [page, layout, styles, packageJson] = await Promise.all([

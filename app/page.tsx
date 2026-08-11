@@ -144,6 +144,11 @@ export default function Home() {
                 黄玉芳
                 <span>医师</span>
               </h1>
+              <div className="hero-name-english" aria-label="Huang Yufang physician">
+                <span>HUANG YUFANG</span>
+                <i aria-hidden="true" />
+                <small>PHYSICIAN</small>
+              </div>
             </div>
             <p className="hero-lead">
               以扎实临床守护生命，以开放求知融汇中西。
@@ -196,6 +201,9 @@ export default function Home() {
             <i />
             <small>BENEVOLENCE</small>
           </div>
+          <div className="hero-personal-seal" aria-label="玉芳医者印">
+            <span>玉</span><span>芳</span><span>医</span><span>者</span>
+          </div>
         </section>
 
         <div className="principle-ticker" aria-label="从医信念">
@@ -212,6 +220,7 @@ export default function Home() {
           </div>
           <div className="manifesto-copy" data-reveal>
             <p className="section-index">01 / 医者之心</p>
+            <p className="section-english">THE HEART OF MEDICINE</p>
             <h2 id="manifesto-title">
               医术是理性的尺度，
               <br />
@@ -292,6 +301,7 @@ export default function Home() {
         <section className="expertise section-pad" id="expertise" aria-labelledby="expertise-title">
           <div className="expertise-heading" data-reveal>
             <p className="section-index light">03 / 专业方向</p>
+            <p className="section-english light">CLINICAL PRACTICE · INTEGRATIVE STUDY</p>
             <h2 id="expertise-title">
               现代临床为基
               <span>东方医理为翼</span>
@@ -360,6 +370,7 @@ export default function Home() {
           <div className="journey-heading" data-reveal>
             <div>
               <p className="section-index">04 / 从医履历</p>
+              <p className="section-english">A LIFE IN MEDICINE</p>
               <h2 id="journey-title">
                 路虽远，
                 <br />
@@ -394,6 +405,7 @@ export default function Home() {
           <div className="statement-label" aria-hidden="true">医 者 自 述</div>
           <div className="statement-copy" data-reveal>
             <p className="section-index light">05 / 医者自述</p>
+            <p className="section-english light centered">IN HER OWN WORDS</p>
             <h2 id="statement-title">“我非常热爱中医。”</h2>
             <p>
               目前我是国家卫健委“西医学习中医”两年期培训的首批学员，正在系统学习和临床实习。
