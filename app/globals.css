@@ -1396,13 +1396,48 @@ body[data-scrolled="true"] .site-header {
 }
 
 .notice-copy p {
-  margin: 0 0 22px;
+  margin: 24px 0 22px;
   color: rgba(7, 23, 29, 0.6);
   font-size: 12px;
   line-height: 1.9;
 }
 
-.notice-copy a {
+.notice-phone {
+  display: grid;
+  gap: 7px;
+  width: max-content;
+  max-width: 100%;
+  padding: 0 0 18px;
+  border-bottom: 1px solid var(--hairline);
+  transition: color 220ms ease, transform 220ms ease;
+}
+
+.notice-phone:hover,
+.notice-phone:focus-visible {
+  color: var(--jade);
+  transform: translateX(4px);
+}
+
+.notice-phone small {
+  color: var(--jade);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+}
+
+.notice-phone strong {
+  font: 500 clamp(25px, 2.4vw, 38px)/1.2 var(--serif);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.notice-phone > span {
+  color: rgba(7, 23, 29, 0.42);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.notice-secondary {
   display: inline-flex;
   gap: 20px;
   padding-bottom: 6px;

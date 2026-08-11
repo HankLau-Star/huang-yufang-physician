@@ -123,8 +123,8 @@ export default function Home() {
           <a href="#journey">从医履历</a>
           <a href="#statement">医者自述</a>
         </nav>
-        <a className="header-action" href="#notice">
-          出诊提示 <span aria-hidden="true">↗</span>
+        <a className="header-action" href="tel:15038264053" aria-label="拨打黄玉芳医师联系电话 15038264053">
+          联系咨询 <span aria-hidden="true">↗</span>
         </a>
       </header>
 
@@ -431,15 +431,24 @@ export default function Home() {
           <div className="notice-card" data-reveal>
             <div className="notice-symbol" aria-hidden="true">＋</div>
             <div>
-              <p className="section-index">就诊提示</p>
-              <h2 id="notice-title">让每一次问诊，都建立在充分了解之上。</h2>
+              <p className="section-index">联系与就诊提示</p>
+              <h2 id="notice-title">如需咨询出诊安排，请直接联系。</h2>
             </div>
             <div className="notice-copy">
+              <a
+                className="notice-phone"
+                href="tel:15038264053"
+                aria-label="拨打联系电话 15038264053"
+              >
+                <small>CONTACT · 联系电话</small>
+                <strong>150 3826 4053</strong>
+                <span>点击直接拨打 ↗</span>
+              </a>
               <p>
                 出诊时间、执业地点与具体诊疗项目，请以当前执业机构的最新公示为准。
                 如遇急危重症，请立即前往具备急救条件的医疗机构或拨打120。
               </p>
-              <a href="#expertise">再次查看专业方向 <span aria-hidden="true">↗</span></a>
+              <a className="notice-secondary" href="#expertise">再次查看专业方向 <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </section>
@@ -463,7 +472,7 @@ export default function Home() {
         <a href="#profile"><span>介</span>简介</a>
         <a href="#expertise"><span>专</span>专长</a>
         <a href="#journey"><span>历</span>履历</a>
-        <a href="#notice"><span>诊</span>提示</a>
+        <a href="tel:15038264053" aria-label="拨打联系电话"><span>联</span>联系</a>
       </nav>
     </div>
   );
