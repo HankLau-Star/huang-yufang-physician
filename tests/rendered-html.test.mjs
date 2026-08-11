@@ -59,11 +59,16 @@ test("ships the three supplied physician photographs and accessible structure", 
   assert.match(page, /aria-label="主导航"/);
   assert.match(page, /prefers-reduced-motion|data-reveal/);
   assert.match(layout, /lang="zh-CN"/);
+  assert.match(layout, /@fontsource-variable\/noto-serif-sc\/wght\.css/);
+  assert.match(layout, /@fontsource-variable\/noto-sans-sc\/wght\.css/);
+  assert.match(layout, /@fontsource\/ma-shan-zheng\/400\.css/);
   assert.match(layout, /viewportFit:\s*"cover"/);
   assert.match(layout, /formatDetection/);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(styles, /@media \(max-width: 520px\)/);
   assert.match(styles, /safe-area-inset-bottom/);
+  assert.match(styles, /--script:\s*"Ma Shan Zheng"/);
+  assert.match(styles, /font-variation-settings:\s*"wght"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 });
 

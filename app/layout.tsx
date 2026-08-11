@@ -1,4 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource-variable/noto-sans-sc/wght.css";
+import "@fontsource-variable/noto-serif-sc/wght.css";
+import "@fontsource/ma-shan-zheng/400.css";
 import "./globals.css";
 
 export const viewport: Viewport = {
