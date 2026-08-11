@@ -64,18 +64,26 @@ export default function Home() {
     const reveals = Array.from(
       document.querySelectorAll<HTMLElement>("[data-reveal]"),
     );
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).dataset.visible = "true";
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14, rootMargin: "0px 0px -6%" },
-    );
-    reveals.forEach((item) => observer.observe(item));
+    let observer: IntersectionObserver | undefined;
+
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).dataset.visible = "true";
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14, rootMargin: "0px 0px -6%" },
+      );
+      reveals.forEach((item) => observer?.observe(item));
+    } else {
+      reveals.forEach((item) => {
+        item.dataset.visible = "true";
+      });
+    }
 
     const onScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -89,10 +97,12 @@ export default function Home() {
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+    }
 
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointerMove);
       delete document.body.dataset.scrolled;

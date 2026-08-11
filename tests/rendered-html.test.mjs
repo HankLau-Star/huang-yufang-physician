@@ -31,7 +31,7 @@ test("server-renders Huang Yufang's physician profile", async () => {
   const html = await response.text();
   assert.match(html, /<html lang="zh-CN">/i);
   assert.match(html, /<title>黄玉芳医师 \| HUANG YUFANG PHYSICIAN<\/title>/i);
-  assert.match(html, /property="og:image"[^>]+og\.png/i);
+  assert.match(html, /property="og:image"[^>]+og\.jpg/i);
   assert.match(html, /海军军医大学第一附属医院/);
   assert.match(html, /国家卫健委“西医学习中医”两年期培训/);
   assert.match(html, /href="tel:15038264053"/);
@@ -45,7 +45,7 @@ test("ships the three supplied physician photographs and accessible structure", 
     access(new URL("../public/huang-yufang-consultation.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-practice.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-service.jpg", import.meta.url)),
-    access(new URL("../public/og.png", import.meta.url)),
+    access(new URL("../public/og.jpg", import.meta.url)),
   ]);
 
   const [page, layout, styles, packageJson] = await Promise.all([
@@ -59,7 +59,23 @@ test("ships the three supplied physician photographs and accessible structure", 
   assert.match(page, /aria-label="主导航"/);
   assert.match(page, /prefers-reduced-motion|data-reveal/);
   assert.match(layout, /lang="zh-CN"/);
+  assert.match(layout, /viewportFit:\s*"cover"/);
+  assert.match(layout, /formatDetection/);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(styles, /@media \(max-width: 520px\)/);
+  assert.match(styles, /safe-area-inset-bottom/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
+});
+
+test("the GitHub Pages export is mobile-safe and uses repository-relative assets", async () => {
+  const html = await readFile(new URL("../docs/index.html", import.meta.url), "utf8");
+
+  assert.match(html, /viewport-fit=cover/);
+  assert.match(html, /\/huang-yufang-physician\/_next\/static\//);
+  assert.match(html, /\/huang-yufang-physician\/huang-yufang-consultation\.jpg/);
+  assert.match(
+    html,
+    /https:\/\/hanklau-star\.github\.io\/huang-yufang-physician\/og\.jpg/,
+  );
+  assert.doesNotMatch(html, /valid-gnat-7482\.chatgpt\.site/);
 });
