@@ -58,6 +58,7 @@ const timeline = [
 
 export default function Home() {
   const shellRef = useRef<HTMLDivElement>(null);
+  const contactCloseRef = useRef<HTMLButtonElement>(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [copyLabel, setCopyLabel] = useState("复制号码");
   const [activeSection, setActiveSection] = useState("top");
@@ -65,6 +66,7 @@ export default function Home() {
   const copyPhone = async () => {
     try {
       await navigator.clipboard.writeText("15038264053");
+      navigator.vibrate?.(18);
       setCopyLabel("已复制");
       window.setTimeout(() => setCopyLabel("复制号码"), 1800);
     } catch {
@@ -103,6 +105,7 @@ export default function Home() {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? window.scrollY / max : 0;
       shell?.style.setProperty("--scroll-progress", String(progress));
+      shell?.style.setProperty("--scroll-shift", `${window.scrollY * 0.035}px`);
       document.body.dataset.scrolled = window.scrollY > 24 ? "true" : "false";
     };
     const onPointerMove = (event: PointerEvent) => {
@@ -153,7 +156,9 @@ export default function Home() {
     };
     document.body.dataset.contactOpen = "true";
     window.addEventListener("keydown", onKeyDown);
+    const focusFrame = window.requestAnimationFrame(() => contactCloseRef.current?.focus());
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       delete document.body.dataset.contactOpen;
       window.removeEventListener("keydown", onKeyDown);
     };
@@ -557,7 +562,7 @@ export default function Home() {
         <div className="contact-sheet">
           <button className="contact-backdrop" type="button" onClick={() => setContactOpen(false)} aria-label="关闭联系窗口" />
           <section className="contact-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="contact-sheet-title">
-            <button className="contact-sheet-close" type="button" onClick={() => setContactOpen(false)} aria-label="关闭">×</button>
+            <button ref={contactCloseRef} className="contact-sheet-close" type="button" onClick={() => setContactOpen(false)} aria-label="关闭">×</button>
             <div className="contact-sheet-seal" aria-hidden="true">医</div>
             <p>CONTACT · 联系方式</p>
             <h2 id="contact-sheet-title">联系黄玉芳医师</h2>
@@ -577,10 +582,10 @@ export default function Home() {
       </div>
 
       <nav className="mobile-dock" aria-label="移动端导航">
-        <a href="#profile"><span>介</span>简介</a>
-        <a href="#expertise"><span>专</span>专长</a>
-        <a href="#journey"><span>历</span>履历</a>
-        <button type="button" onClick={() => setContactOpen(true)} aria-label="打开联系方式"><span>联</span>联系</button>
+        <a href="#profile" data-active={activeSection === "profile"}><span>介</span>简介</a>
+        <a href="#expertise" data-active={activeSection === "expertise"}><span>专</span>专长</a>
+        <a href="#journey" data-active={activeSection === "journey"}><span>历</span>履历</a>
+        <button type="button" data-active={activeSection === "contact" || contactOpen} onClick={() => setContactOpen(true)} aria-label="打开联系方式"><span>联</span>联系</button>
       </nav>
     </div>
   );
