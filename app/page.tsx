@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const westernExpertise = [
   {
@@ -58,6 +58,20 @@ const timeline = [
 
 export default function Home() {
   const shellRef = useRef<HTMLDivElement>(null);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [copyLabel, setCopyLabel] = useState("复制号码");
+  const [activeSection, setActiveSection] = useState("top");
+
+  const copyPhone = async () => {
+    try {
+      await navigator.clipboard.writeText("15038264053");
+      setCopyLabel("已复制");
+      window.setTimeout(() => setCopyLabel("复制号码"), 1800);
+    } catch {
+      setCopyLabel("请长按号码复制");
+      window.setTimeout(() => setCopyLabel("复制号码"), 2200);
+    }
+  };
 
   useEffect(() => {
     const shell = shellRef.current;
@@ -94,7 +108,29 @@ export default function Home() {
     const onPointerMove = (event: PointerEvent) => {
       shell?.style.setProperty("--pointer-x", `${event.clientX}px`);
       shell?.style.setProperty("--pointer-y", `${event.clientY}px`);
+      shell?.style.setProperty(
+        "--portrait-tilt-x",
+        `${((event.clientY / window.innerHeight) - 0.5) * -1.6}deg`,
+      );
+      shell?.style.setProperty(
+        "--portrait-tilt-y",
+        `${((event.clientX / window.innerWidth) - 0.5) * 1.8}deg`,
+      );
     };
+
+    const sections = ["top", "profile", "expertise", "journey", "statement", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target.id) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-28% 0px -58%", threshold: [0.01, 0.15, 0.35] },
+    );
+    sections.forEach((section) => sectionObserver.observe(section));
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
@@ -103,11 +139,25 @@ export default function Home() {
 
     return () => {
       observer?.disconnect();
+      sectionObserver.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointerMove);
       delete document.body.dataset.scrolled;
     };
   }, []);
+
+  useEffect(() => {
+    if (!contactOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setContactOpen(false);
+    };
+    document.body.dataset.contactOpen = "true";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      delete document.body.dataset.contactOpen;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [contactOpen]);
 
   return (
     <div className="site-shell" ref={shellRef}>
@@ -128,14 +178,14 @@ export default function Home() {
           </span>
         </a>
         <nav className="main-nav" aria-label="主导航">
-          <a href="#profile">医者简介</a>
-          <a href="#expertise">专业方向</a>
-          <a href="#journey">从医履历</a>
-          <a href="#statement">医者自述</a>
+          <a href="#profile" data-active={activeSection === "profile"}>医者简介</a>
+          <a href="#expertise" data-active={activeSection === "expertise"}>专业方向</a>
+          <a href="#journey" data-active={activeSection === "journey"}>从医履历</a>
+          <a href="#statement" data-active={activeSection === "statement"}>医者自述</a>
         </nav>
-        <a className="header-action" href="tel:15038264053" aria-label="拨打黄玉芳医师联系电话 15038264053">
-          联系咨询 <span aria-hidden="true">↗</span>
-        </a>
+        <button className="header-action" type="button" onClick={() => setContactOpen(true)}>
+          联系咨询 <span aria-hidden="true">＋</span>
+        </button>
       </header>
 
       <main id="main-content">
@@ -161,9 +211,9 @@ export default function Home() {
               </div>
             </div>
             <p className="hero-lead">
-              以扎实临床守护生命，以开放求知融汇中西。
+              以规范临床守护生命，以持续求知融汇中西。
               <br />
-              在时间与实践中，始终把患者放在诊疗的中心。
+              走过三甲医院、基层卫生院与妇幼保健一线，始终把患者放在诊疗的中心。
             </p>
             <div className="hero-actions">
               <a className="primary-button" href="#profile">
@@ -237,13 +287,13 @@ export default function Home() {
               <em>仁心是医学的温度。</em>
             </h2>
             <p>
-              从军医大学附属医院的规范训练，到基层乡卫生院的长期坚守，再到妇幼保健领域的专业深耕，
-              不同的岗位，始终如一的，是对生命的敬畏与对专业的审慎。
+              从军医大学附属医院的规范训练，到乡卫生院二十余年的扎根，再到妇幼保健领域的专业深耕，
+              岗位在变，对生命的敬畏、对证据的尊重与对患者的耐心始终未变。
             </p>
           </div>
           <div className="manifesto-note" data-reveal>
             <span className="note-rule" />
-            <p>西医辨病求真，中医辨证求和。二者皆以患者受益为归处。</p>
+            <p>以西医临床为根基，以中医思维拓宽照护视角；守住规范与边界，一切以患者真正受益为归处。</p>
           </div>
         </section>
 
@@ -278,14 +328,15 @@ export default function Home() {
             <div className="section-heading">
               <span className="vertical-label">ABOUT THE PHYSICIAN</span>
               <h2 id="profile-title">
-                一位经过时间淬炼的
+                临床经验与持续求学
                 <br />
-                <em>临床医师</em>
+                <em>相互照亮</em>
               </h2>
             </div>
             <p className="profile-intro">
-              黄玉芳，女，西医临床执业医师。河南大学临床医学本科毕业，
-              新郑市妇幼保健院退休医师。拥有大型三甲医院、基层卫生院与妇幼保健机构的多层次临床经历。
+              黄玉芳，西医临床执业医师，河南大学临床医学本科毕业，
+              新郑市妇幼保健院退休医师。职业经历横跨大型三甲医院、基层卫生院与妇幼保健机构，
+              长期专注儿科常见病、多发病诊疗及危重症识别与救治。
             </p>
             <dl className="fact-list">
               <div>
@@ -317,8 +368,8 @@ export default function Home() {
               <span>东方医理为翼</span>
             </h2>
             <p>
-              坚持规范评估与循证思维，在持续学习中探索中医适宜技术的合理应用，
-              为患者提供更有温度、更具整体观的健康照护。
+              坚持规范评估、病情分层与循证思维，在持续学习中审慎探索中医适宜技术的合理应用，
+              让现代临床的严谨与整体照护的温度彼此补充。
             </p>
           </div>
 
@@ -389,7 +440,7 @@ export default function Home() {
             </div>
             <p>
               从规范化临床训练到基层长期实践，从儿科专业深耕到系统学习中医——
-              医学之路，是一生不断求证、不断精进的过程。
+              医学之路，不只关乎经验的积累，也关乎一生持续求证、审慎更新与精进。
             </p>
           </div>
 
@@ -423,7 +474,7 @@ export default function Home() {
               也经常外出参加培训，不断精进贴敷、推拿、拔罐、针灸等技术。
             </p>
             <p>
-              我相信，中医文化一定会在守正创新中发扬光大。愿以所学服务患者，济世传承。
+              我相信，中医文化会在守正创新与规范实践中不断焕发生命力。愿以所学服务患者，济世传承。
             </p>
             <div className="statement-signature">
               <span>黄玉芳</span>
@@ -437,28 +488,41 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="notice section-pad" id="notice" aria-labelledby="notice-title">
-          <div className="notice-card" data-reveal>
-            <div className="notice-symbol" aria-hidden="true">＋</div>
-            <div>
-              <p className="section-index">联系与就诊提示</p>
-              <h2 id="notice-title">如需咨询出诊安排，请直接联系。</h2>
+        <section className="contact-section section-pad" id="contact" aria-labelledby="contact-title">
+          <div className="contact-watermark" aria-hidden="true">聯</div>
+          <div className="contact-heading" data-reveal>
+            <p className="section-index light">06 / 联系与就诊</p>
+            <p className="section-english light">CONTACT · APPOINTMENT INFORMATION</p>
+            <h2 id="contact-title">先确认安排，<br /><em>再安心就诊。</em></h2>
+            <p>
+              电话用于咨询出诊时间、执业地点与就诊安排。为保证诊疗安全，具体病情判断、处方与治疗方案需经当面评估后确定。
+            </p>
+          </div>
+
+          <div className="contact-console" data-reveal>
+            <div className="contact-status">
+              <span><i aria-hidden="true" /> PHONE CONTACT</span>
+              <small>河南 · 新郑</small>
             </div>
-            <div className="notice-copy">
-              <a
-                className="notice-phone"
-                href="tel:15038264053"
-                aria-label="拨打联系电话 15038264053"
-              >
-                <small>CONTACT · 联系电话</small>
-                <strong>150 3826 4053</strong>
-                <span>点击直接拨打 ↗</span>
+            <a className="contact-number" href="tel:15038264053" aria-label="拨打黄玉芳医师联系电话 150 3826 4053">
+              <span>150</span><span>3826</span><span>4053</span>
+            </a>
+            <div className="contact-actions">
+              <a className="contact-call" href="tel:15038264053">
+                <span aria-hidden="true">↗</span>
+                <strong>立即拨打</strong>
+                <small>CALL NOW</small>
               </a>
-              <p>
-                出诊时间、执业地点与具体诊疗项目，请以当前执业机构的最新公示为准。
-                如遇急危重症，请立即前往具备急救条件的医疗机构或拨打120。
-              </p>
-              <a className="notice-secondary" href="#expertise">再次查看专业方向 <span aria-hidden="true">↗</span></a>
+              <button className="contact-copy" type="button" onClick={copyPhone}>
+                <span aria-hidden="true">□</span>
+                <strong>{copyLabel}</strong>
+                <small>COPY NUMBER</small>
+              </button>
+            </div>
+            <div className="contact-guidance">
+              <div><span>01</span><p><strong>电话咨询</strong>说明希望了解出诊或就诊安排</p></div>
+              <div><span>02</span><p><strong>确认信息</strong>以当前执业机构最新公示为准</p></div>
+              <div><span>03</span><p><strong>紧急情况</strong>请立即前往急救机构或拨打120</p></div>
             </div>
           </div>
         </section>
@@ -478,11 +542,45 @@ export default function Home() {
         <a href="#top" aria-label="返回页面顶部">返回顶部 ↑</a>
       </footer>
 
+      <button
+        className="floating-contact"
+        type="button"
+        onClick={() => setContactOpen(true)}
+        aria-label="打开联系黄玉芳医师的方式"
+      >
+        <span aria-hidden="true">联</span>
+        <strong>联系医师</strong>
+        <small>CONTACT</small>
+      </button>
+
+      {contactOpen && (
+        <div className="contact-sheet">
+          <button className="contact-backdrop" type="button" onClick={() => setContactOpen(false)} aria-label="关闭联系窗口" />
+          <section className="contact-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="contact-sheet-title">
+            <button className="contact-sheet-close" type="button" onClick={() => setContactOpen(false)} aria-label="关闭">×</button>
+            <div className="contact-sheet-seal" aria-hidden="true">医</div>
+            <p>CONTACT · 联系方式</p>
+            <h2 id="contact-sheet-title">联系黄玉芳医师</h2>
+            <span className="contact-sheet-note">咨询出诊时间、执业地点与就诊安排</span>
+            <a className="contact-sheet-number" href="tel:15038264053">150 3826 4053</a>
+            <div className="contact-sheet-actions">
+              <a href="tel:15038264053"><span aria-hidden="true">↗</span>立即拨打</a>
+              <button type="button" onClick={copyPhone}><span aria-hidden="true">□</span>{copyLabel}</button>
+            </div>
+            <small>具体诊疗须经当面评估；急危重症请拨打120或立即前往急救机构。</small>
+          </section>
+        </div>
+      )}
+
+      <div className="copy-toast" role="status" aria-live="polite" data-visible={copyLabel !== "复制号码"}>
+        {copyLabel}
+      </div>
+
       <nav className="mobile-dock" aria-label="移动端导航">
         <a href="#profile"><span>介</span>简介</a>
         <a href="#expertise"><span>专</span>专长</a>
         <a href="#journey"><span>历</span>履历</a>
-        <a href="tel:15038264053" aria-label="拨打联系电话"><span>联</span>联系</a>
+        <button type="button" onClick={() => setContactOpen(true)} aria-label="打开联系方式"><span>联</span>联系</button>
       </nav>
     </div>
   );
