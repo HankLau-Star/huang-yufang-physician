@@ -36,6 +36,8 @@ test("server-renders Huang Yufang's physician profile", async () => {
   assert.match(html, /国家卫健委“西医学习中医”两年期培训/);
   assert.match(html, /href="tel:15038264053"/);
   assert.match(html, /a15038264053/);
+  assert.match(html, /huang-yufang-signature-portrait\.png/);
+  assert.match(html, /守正为本，仁心为念/);
   assert.match(html, /150 3826 4053/);
   assert.match(html, /本网站内容仅作医师个人经历与专业方向介绍|本站内容仅作医师个人经历与专业方向介绍/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);

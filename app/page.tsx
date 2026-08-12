@@ -506,6 +506,30 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="signature-feature" aria-labelledby="signature-feature-title">
+          <figure className="signature-feature-frame" data-reveal>
+            <div className="signature-feature-image">
+              <img
+                src="/huang-yufang-signature-portrait.png"
+                alt="黄玉芳医师个人形象照，画面文字为守正、仁心、融汇中西"
+                width="1680"
+                height="941"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <figcaption>
+              <div>
+                <p>PHYSICIAN PORTRAIT · 医者名片</p>
+                <h2 id="signature-feature-title">守正为本，仁心为念。</h2>
+              </div>
+              <a href="#contact">
+                联系咨询 <span aria-hidden="true">↘</span>
+              </a>
+            </figcaption>
+          </figure>
+        </section>
+
         <section className="contact-section section-pad" id="contact" aria-labelledby="contact-title">
           <div className="contact-watermark" aria-hidden="true">聯</div>
           <div className="contact-heading" data-reveal>
