@@ -48,6 +48,7 @@ test("ships the three supplied physician photographs and accessible structure", 
     access(new URL("../public/huang-yufang-consultation.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-practice.jpg", import.meta.url)),
     access(new URL("../public/huang-yufang-service.jpg", import.meta.url)),
+    access(new URL("../public/huang-yufang-signature-portrait.png", import.meta.url)),
     access(new URL("../public/og.jpg", import.meta.url)),
   ]);
 
@@ -79,6 +80,7 @@ test("the GitHub Pages export is mobile-safe and uses repository-relative assets
   assert.match(html, /viewport-fit=cover/);
   assert.match(html, /\/huang-yufang-physician\/_next\/static\//);
   assert.match(html, /\/huang-yufang-physician\/huang-yufang-consultation\.jpg/);
+  assert.match(html, /\/huang-yufang-physician\/huang-yufang-signature-portrait\.png/);
   assert.match(
     html,
     /https:\/\/hanklau-star\.github\.io\/huang-yufang-physician\/og\.jpg/,

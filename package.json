@@ -1,5 +1,5 @@
 {
-  "name": "site-creator-vinext-starter",
+  "name": "huang-yufang-physician",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -10,6 +10,7 @@
     "build": "vinext build",
     "fonts:subset": "node scripts/build-font-subset.mjs",
     "export:github": "node scripts/export-github-pages.mjs",
+    "publish:github": "npm run build && npm run export:github",
     "start": "vinext start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",

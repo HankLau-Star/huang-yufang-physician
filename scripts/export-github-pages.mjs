@@ -45,6 +45,7 @@ for (const assetPath of [
   "/huang-yufang-consultation.jpg",
   "/huang-yufang-practice.jpg",
   "/huang-yufang-service.jpg",
+  "/huang-yufang-signature-portrait.png",
 ]) {
   html = html.replaceAll(assetPath, `${basePath}${assetPath}`);
 }
