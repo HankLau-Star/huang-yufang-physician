@@ -4277,6 +4277,156 @@ body[data-scrolled="true"] .site-header::after {
   }
 }
 
+/* Homepage typography: a restrained medical-editorial hierarchy with a calligraphic Chinese focus. */
+.hero-kicker,
+.hero-name-english,
+.hero-name-english small {
+  font-family: "Helvetica Neue", Arial, var(--sans);
+}
+
+.hero-kicker {
+  font-weight: 620;
+  font-variation-settings: "wght" 620;
+  letter-spacing: 0.32em;
+}
+
+.hero h1 {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 1.5vw, 23px);
+  font-weight: 640;
+  font-variation-settings: "wght" 640;
+  letter-spacing: 0;
+}
+
+.hero-name-cn {
+  display: inline-block;
+  font: inherit;
+  font-style: normal;
+  letter-spacing: 0.085em;
+  white-space: nowrap;
+  text-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+}
+
+.hero h1 .hero-role {
+  margin: 0;
+  padding-top: 0.34em;
+  font-family: var(--serif);
+  font-size: 0.22em;
+  font-weight: 540;
+  font-variation-settings: "wght" 540;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  vertical-align: initial;
+  white-space: nowrap;
+}
+
+.hero-name-english {
+  margin-top: 23px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.36em;
+}
+
+.hero-name-english small {
+  font-weight: 650;
+  letter-spacing: 0.26em;
+}
+
+.hero-eyebrow {
+  font-family: var(--serif);
+  font-weight: 560;
+  font-variation-settings: "wght" 560;
+  letter-spacing: 0.15em;
+}
+
+.hero-lead {
+  font-weight: 410;
+  font-variation-settings: "wght" 410;
+  letter-spacing: 0.055em;
+}
+
+.hero-lead strong {
+  color: rgba(255, 253, 247, 0.93);
+  font-weight: 570;
+  font-variation-settings: "wght" 570;
+}
+
+.credentials-strip strong {
+  font-weight: 590;
+  font-variation-settings: "wght" 590;
+  letter-spacing: 0.04em;
+}
+
+.credentials-strip span {
+  font-weight: 450;
+  font-variation-settings: "wght" 450;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 860px) {
+  .hero-kicker {
+    font-size: 7px;
+    letter-spacing: 0.23em;
+  }
+
+  .hero h1 {
+    gap: 9px;
+  }
+
+  .hero-name-cn {
+    letter-spacing: 0.065em;
+  }
+
+  .hero h1 .hero-role {
+    padding-top: 0.28em;
+    font-size: 0.245em;
+    letter-spacing: 0.18em;
+  }
+
+  .hero-name-english {
+    margin-top: 12px;
+    font-size: 8px;
+    font-weight: 660;
+    letter-spacing: 0.245em;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-lead strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .credentials-strip strong {
+    letter-spacing: 0.025em;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1 {
+    gap: 7px;
+  }
+
+  .hero-name-cn {
+    letter-spacing: 0.045em;
+  }
+
+  .hero h1 .hero-role {
+    font-size: 0.23em;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-name-english {
+    letter-spacing: 0.18em;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

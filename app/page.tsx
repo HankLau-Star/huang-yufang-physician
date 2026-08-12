@@ -219,8 +219,8 @@ export default function Home() {
             <div className="hero-title-wrap">
               <p className="hero-kicker">CLINICAL MEDICINE · INTEGRATIVE CARE</p>
               <h1 id="hero-title">
-                黄玉芳
-                <span>医师</span>
+                <b className="hero-name-cn">黄玉芳</b>
+                <span className="hero-role">医师</span>
               </h1>
               <div className="hero-name-english" aria-label="Huang Yufang physician">
                 <span>HUANG YUFANG</span>
@@ -229,7 +229,7 @@ export default function Home() {
               </div>
             </div>
             <p className="hero-lead">
-              以规范临床守护生命，以持续求知融汇中西。
+              <strong>以规范临床守护生命，以持续求知融汇中西。</strong>
               <br />
               走过三甲医院、基层卫生院与妇幼保健一线，始终把患者放在诊疗的中心。
             </p>
