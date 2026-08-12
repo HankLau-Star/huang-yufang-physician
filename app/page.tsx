@@ -61,6 +61,7 @@ export default function Home() {
   const contactCloseRef = useRef<HTMLButtonElement>(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [copyLabel, setCopyLabel] = useState("复制号码");
+  const [wechatCopyLabel, setWechatCopyLabel] = useState("复制微信号");
   const [activeSection, setActiveSection] = useState("top");
 
   const copyPhone = async () => {
@@ -72,6 +73,18 @@ export default function Home() {
     } catch {
       setCopyLabel("请长按号码复制");
       window.setTimeout(() => setCopyLabel("复制号码"), 2200);
+    }
+  };
+
+  const copyWechat = async () => {
+    try {
+      await navigator.clipboard.writeText("a15038264053");
+      navigator.vibrate?.(18);
+      setWechatCopyLabel("微信号已复制");
+      window.setTimeout(() => setWechatCopyLabel("复制微信号"), 1800);
+    } catch {
+      setWechatCopyLabel("请长按微信号复制");
+      window.setTimeout(() => setWechatCopyLabel("复制微信号"), 2200);
     }
   };
 
@@ -512,6 +525,16 @@ export default function Home() {
             <a className="contact-number" href="tel:15038264053" aria-label="拨打黄玉芳医师联系电话 150 3826 4053">
               <span>150</span><span>3826</span><span>4053</span>
             </a>
+            <div className="contact-wechat">
+              <div>
+                <small>WECHAT ID · 微信联系</small>
+                <strong>a15038264053</strong>
+              </div>
+              <button type="button" onClick={copyWechat} aria-label="复制黄玉芳医师微信号 a15038264053">
+                <span aria-hidden="true">微</span>
+                <b>{wechatCopyLabel}</b>
+              </button>
+            </div>
             <div className="contact-actions">
               <a className="contact-call" href="tel:15038264053">
                 <span aria-hidden="true">↗</span>
@@ -568,6 +591,11 @@ export default function Home() {
             <h2 id="contact-sheet-title">联系黄玉芳医师</h2>
             <span className="contact-sheet-note">咨询出诊时间、执业地点与就诊安排</span>
             <a className="contact-sheet-number" href="tel:15038264053">150 3826 4053</a>
+            <div className="contact-sheet-wechat">
+              <span>微信号 · WECHAT</span>
+              <strong>a15038264053</strong>
+              <button type="button" onClick={copyWechat}>{wechatCopyLabel}</button>
+            </div>
             <div className="contact-sheet-actions">
               <a href="tel:15038264053"><span aria-hidden="true">↗</span>立即拨打</a>
               <button type="button" onClick={copyPhone}><span aria-hidden="true">□</span>{copyLabel}</button>
@@ -577,8 +605,8 @@ export default function Home() {
         </div>
       )}
 
-      <div className="copy-toast" role="status" aria-live="polite" data-visible={copyLabel !== "复制号码"}>
-        {copyLabel}
+      <div className="copy-toast" role="status" aria-live="polite" data-visible={copyLabel !== "复制号码" || wechatCopyLabel !== "复制微信号"}>
+        {wechatCopyLabel !== "复制微信号" ? wechatCopyLabel : copyLabel}
       </div>
 
       <nav className="mobile-dock" aria-label="移动端导航">
